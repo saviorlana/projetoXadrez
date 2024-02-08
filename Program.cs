@@ -3,26 +3,25 @@ using xadrez_console.tabuleiro;
 using xadrez_console.xadrez;
 
 
-namespace xadrez_console
-{ 
+namespace xadrez_console {
     internal class Program // Associação (composição) de referencias no codigo abaixo
     {
-        static void Main(string[] args)
-        {
-            try
-            {
-                Tabuleiro tab = new Tabuleiro(8, 8);
+        static void Main(string[] args) {
+            try {
+                PartidaDeXadrez partida = new PartidaDeXadrez();
+                while (!partida.Terminada) {
+                    Console.Clear();
+                    Tela.ImprimirTabuleiro(partida.Tab);
+                    Console.WriteLine();
+                    Console.Write("Origem: ");
+                    Posicao origem = Tela.LerPosicaoXadrez().ToPosicao();
 
-                tab.ColocarPeca(new Torre(tab, Cor.Preta), new Posicao(0, 0));
-                tab.ColocarPeca(new Torre(tab, Cor.Preta), new Posicao(1, 3));
-                tab.ColocarPeca(new Rei(tab, Cor.Preta), new Posicao(2, 4));
-                tab.ColocarPeca(new Torre(tab, Cor.Branca), new Posicao(3, 5));
-
-                Tela.ImprimirTabuleiro(tab);
-                Console.WriteLine();
-            }
-            catch (TabuleiroException e)
-            {
+                    Console.Write("Destino: ");
+                    Posicao destino = Tela.LerPosicaoXadrez().ToPosicao();
+                    
+                    partida.ExecutaMovimento(origem, destino);
+                }
+            } catch (TabuleiroException e) {
                 Console.WriteLine(e.Message);
             }
             Console.ReadLine();
